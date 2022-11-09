@@ -1,0 +1,55 @@
+{
+  "name": "treasure",
+  "version": "0.0.1",
+  "description": "A Quasar Project",
+  "productName": "treasure",
+  "author": "xiangjie <xiangjie@tansun.com.cn>",
+  "private": true,
+  "scripts": {
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "build:pwa": "quasar build -m pwa",
+    "lint": "eslint --ext .js,.vue ./",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^3.7.0",
+    "@quasar/extras": "^1.0.0",
+    "axios": "^1.1.2",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
+    "core-js": "^3.6.5",
+    "node-schedule": "^2.1.0",
+    "push.js": "^1.0.12",
+    "quasar": "^1.0.0",
+    "qweather-icons": "^1.1.1",
+    "vconsole": "^3.14.6",
+    "vue-i18n": "^8.0.0",
+    "xe-utils": "^3.5.7"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app": "^2.0.0",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "eslint-webpack-plugin": "^2.0.0",
+    "prettier": "^2.5.1"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}
