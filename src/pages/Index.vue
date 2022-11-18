@@ -1,10 +1,11 @@
 <template>
-  <q-page class="fit q-pa-md overflow-auto">
+  <q-page class="fit overflow-auto">
+    <div class="q-ma-md flex justify-between">
     <template v-for="item in menuList">
       <q-card
         v-if="!item.hidden"
         :key="item.name"
-        class="q-mb-md q-pa-xs bg-primary text-white a_card"
+        class="q-mb-md q-pa-xs bg-primary text-white harf_width_8 a_card"
         @click="() => gotoPage(item.path)"
       >
         <q-card-section class="q-pa-xs text-center">
@@ -12,6 +13,7 @@
         </q-card-section>
       </q-card>
     </template>
+    </div>
   </q-page>
 </template>
 
@@ -34,6 +36,6 @@ export default {
 
 <style lang="scss" scoped>
 .a_card {
-  font-size: 20px;
+  font-size: 18px;
 }
 </style>

@@ -1,12 +1,17 @@
 <template>
   <q-page class="fit overflow-auto q-pa-sm">
-    <q-card class=" q-mb-md q-pa-sm" bordered>
+    <q-card
+      v-for="cardItem in hotList"
+      :key="cardItem.key"
+      class="q-mb-md q-pa-sm"
+      bordered
+    >
       <q-card-section class="q-pt-none">
-        <div class="text-h6">微博热点</div>
+        <div class="text-h6">{{ cardItem.name }}</div>
       </q-card-section>
-      <q-card-section class="q-pt-none">
+      <q-card-section v-if="cardItem.data.length > 0" class="q-pt-none">
         <div
-          v-for="item in wbList"
+          v-for="item in cardItem.data"
           :key="item.keyword"
           class="text-overline flex items-center"
           @click="handleClick(item.url)"
@@ -17,12 +22,13 @@
           <span v-if="item.isNew" class="text-icon new">新</span>
         </div>
       </q-card-section>
+      <q-card-section v-else class="q-pt-none">暂无数据</q-card-section>
     </q-card>
   </q-page>
 </template>
 
 <script>
-import { apiWeibo } from "src/api/coderutil.js";
+import { apiWeibo, apiZhihu, apiBaidu, apiToutiao } from "src/api/coderutil.js";
 
 export default {
   name: "Hotspot",
@@ -54,28 +60,72 @@ export default {
 
     return {
       wbList: [...baseList],
+      zhList: [],
+      bdList: [],
+      ttList: [],
     };
+  },
+  computed: {
+    hotList() {
+      return [
+        { name: "微博热点", key: "wb", data: this.wbList },
+        { name: "知乎热点", key: "zh", data: this.zhList },
+        { name: "百度热点", key: "bd", data: this.bdList },
+        { name: "头条热点", key: "tt", data: this.ttList },
+      ];
+    },
   },
   methods: {
     /** 获取数据 */
     async getWeiboData() {
-      this.$q.loading.show();
       try {
         const res = await apiWeibo();
         if (res.status === 200) {
           this.wbList = [...res.data];
-          this.$store.commit("myData/updateWbData", [...res.data]);
         } else {
           throw "error";
         }
       } catch (error) {
-        this.$q.notify({
-          position: "top",
-          message: `发生了不可描述的问题`,
-          color: "warning",
-        });
-      } finally {
-        this.$q.loading.hide();
+        throw "获取微博热点失败";
+      }
+    },
+    /** 获取数据 */
+    async getZhihuData() {
+      try {
+        const res = await apiZhihu();
+        if (res.status === 200) {
+          this.zhList = [...res.data];
+        } else {
+          throw "error";
+        }
+      } catch (error) {
+        throw "获取知乎热点失败";
+      }
+    },
+    /** 获取数据 */
+    async getBaiduData() {
+      try {
+        const res = await apiBaidu();
+        if (res.status === 200) {
+          this.bdList = [...res.data];
+        } else {
+          throw "error";
+        }
+      } catch (error) {
+        throw "获取百度热点失败";
+      }
+    },
+    /** 获取数据 */
+    async getToutiaoData() {
+      try {
+        const res = await apiToutiao();
+        if (res.status === 200) {
+          this.ttList = [...res.data];
+        } else {
+          throw "error";
+        }
+      } catch (error) {
+        throw "获取头条热点失败";
       }
     },
     handleClick(url) {
@@ -85,12 +135,36 @@ export default {
       }
     },
   },
-  mounted() {
-    const data = this.$store.state.myData.wbData;
-    if (data?.length < 1) {
-      this.getWeiboData();
+  async mounted() {
+    const { wbData, zhData, bdData, ttData } = this.$store.state.myData.hotData;
+    if (wbData?.length < 1) {
+      try {
+        this.$q.loading.show();
+        await this.getWeiboData();
+        await this.getZhihuData();
+        await this.getBaiduData();
+        await this.getToutiaoData();
+
+        this.$store.commit("myData/updateHotData", {
+          wbData: this.wbList,
+          zhData: this.zhList,
+          bdData: this.bdList,
+          ttData: this.ttList,
+        });
+      } catch (error) {
+        this.$q.notify({
+          position: "top",
+          message: `${error}`,
+          color: "warning",
+        });
+      } finally {
+        this.$q.loading.hide();
+      }
     } else {
-      this.wbList = [...data];
+      this.wbList = [...wbData];
+      this.zhList = [...zhData];
+      this.bdList = [...bdData];
+      this.ttList = [...ttData];
     }
   },
 };
@@ -104,6 +178,7 @@ export default {
 }
 .text-icon {
   margin: 0 2px;
+  padding-left: 2px;
   width: 16px;
   height: 16px;
   line-height: 16px;

@@ -3,6 +3,9 @@
 .harf-width {
   width: 50%;
 }
+.harf_width_8 {
+  width: calc(50% - 8px);
+}
 
 .harf-height {
   height: 50%;

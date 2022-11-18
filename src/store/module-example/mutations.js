@@ -4,9 +4,9 @@ export function someMutation (/* state */) {
 export const updateOneData = (state, data) => {
   state.oneData = data;
 }
-/** 更新wb数据 */
-export const updateWbData = (state, data) => {
-  state.wbData = data;
+/** 更新hotData数据 */
+export const updateHotData = (state, data) => {
+  state.hotData = data;
 }
 
 /** 更新sayToday数据 */

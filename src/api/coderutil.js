@@ -31,3 +31,36 @@ export const apiWeibo = async () => {
   }
   return { status: res.status };
 };
+
+/** zhihu热搜 */
+export const apiZhihu = async () => {
+  const res = await get(`${coderutilUrl}/api/resou/v1/zhihu`, {
+    ...baseParams,
+  });
+  if (res.status === 200) {
+    return { ...res.data, status: res.status };
+  }
+  return { status: res.status };
+};
+
+/** Baidu热搜 */
+export const apiBaidu = async () => {
+  const res = await get(`${coderutilUrl}/api/resou/v1/baidu`, {
+    ...baseParams,
+  });
+  if (res.status === 200) {
+    return { ...res.data, status: res.status };
+  }
+  return { status: res.status };
+};
+
+/** 头条热榜 */
+export const apiToutiao = async () => {
+  const res = await get(`${coderutilUrl}/api/resou/v1/toutiao`, {
+    ...baseParams,
+  });
+  if (res.status === 200) {
+    return { ...res.data, status: res.status };
+  }
+  return { status: res.status };
+};

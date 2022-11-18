@@ -8,8 +8,17 @@ export default function () {
       hitokotoObj: null,
       articleObj: null,
     },
-    // wb数据
-    wbData: [],
+    // 热点数据
+    hotData: {
+      // wb数据
+      wbData: [],
+      // zhihu数据
+      zhData: [],
+      // Baidu数据
+      bdData: [],
+      // toutiao数据
+      ttData: [],
+    },
     // sayToday数据
     sayTodayData: [],
     // 记零数据
