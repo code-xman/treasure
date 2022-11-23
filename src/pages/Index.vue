@@ -1,18 +1,26 @@
 <template>
   <q-page class="fit overflow-auto">
     <div class="q-ma-md flex justify-between">
-    <template v-for="item in menuList">
-      <q-card
-        v-if="!item.hidden"
-        :key="item.name"
-        class="q-mb-md q-pa-xs bg-primary text-white harf_width_8 a_card"
-        @click="() => gotoPage(item.path)"
-      >
-        <q-card-section class="q-pa-xs text-center">
-          {{ item.title }}
-        </q-card-section>
-      </q-card>
-    </template>
+      <template v-for="item in menuList">
+        <q-card
+          v-if="!item.hidden"
+          :key="item.name"
+          class="q-mb-md q-pa-xs bg-primary text-white harf_width_8 a_card"
+          @click="() => gotoPage(item)"
+        >
+          <q-card-section class="q-pa-xs flex items-center">
+            <q-icon v-if="item.icon" :name="item.icon" />
+            <q-icon
+              v-if="item.iconfont"
+              class="iconfont"
+              :class="item.iconfont"
+            />
+            <div class="flex-1 text-center">
+              {{ item.meta?.title }}
+            </div>
+          </q-card-section>
+        </q-card>
+      </template>
     </div>
   </q-page>
 </template>
@@ -27,8 +35,11 @@ export default {
     };
   },
   methods: {
-    gotoPage(path) {
-      this.$router.push(path);
+    gotoPage(link) {
+      this.$router.push({
+        name: link.name,
+        params: { title: link.meta?.title },
+      });
     },
   },
 };
@@ -36,6 +47,6 @@ export default {
 
 <style lang="scss" scoped>
 .a_card {
-  font-size: 18px;
+  font-size: 16px;
 }
 </style>

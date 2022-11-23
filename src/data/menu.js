@@ -51,57 +51,84 @@ const isDev = process.env.NODE_ENV === "development"
 const menuList = [
   {
     name: "home",
-    title: "主页",
     path: "/",
+    iconfont: 'icon-home',
+    meta: {
+      title: "主页",
+    },
     caption: '所有功能集合页面',
   },
   {
     name: "test",
-    title: "test",
     path: "/test",
+    iconfont: 'icon-a-carryout',
+    meta: {
+      title: "test",
+    },
     caption: 'test',
     hidden: !isDev,
   },
   {
     name: "anniversaries",
-    title: "下一个记零日",
     path: "/anniversaries",
+    iconfont: 'icon-calendar',
+    meta: {
+      title: "下一个记零日",
+    },
     caption: '那些值得记住的日子',
   },
   {
     name: "together",
-    title: "不如小聚",
     path: "/together",
+    iconfont: 'icon-mail',
+    meta: {
+      title: "不如小聚",
+    },
     caption: '系兄弟，就来看我  --渣渣辉',
   },
   {
     name: "helpSelect",
-    title: "专治选择困难",
     path: "/helpSelect",
+    iconfont: 'icon-a-piechart-circle',
+    meta: {
+      title: "专治选择困难",
+    },
     caption: '选择困难？不如交给我来选吧！',
   },
   {
     name: "one",
-    title: "一个就好",
     path: "/one",
+    iconfont: 'icon-container',
+    meta: {
+      title: "一个就好",
+    },
     caption: '每次一个，看看是啥',
   },
   {
     name: "sayToday",
-    title: "历史上的今天",
     path: "/sayToday",
+    iconfont: 'icon-reconciliation',
+    meta: {
+      title: "历史上的今天",
+    },
     caption: '看看历史的今日发生的什么',
   },
   {
     name: "myWeather",
-    title: "天眼气查查",
     path: "/myWeather",
+    iconfont: 'icon-cloud',
+    meta: {
+      title: "天眼气查查",
+    },
     caption: '查询近日天气情况',
   },
   {
     name: "hotspot",
-    title: "每日热点",
     path: "/hotspot",
+    iconfont: 'icon-project',
+    meta: {
+      title: "每日热点",
+    },
     caption: '看看今天大家都在关注些什么',
   },
 ];

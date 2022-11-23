@@ -12,10 +12,10 @@
         />
 
         <q-toolbar-title>
-          {{title}}
+          {{ title }}
         </q-toolbar-title>
 
-        <!-- <div>Treasure v0.0.1</div> -->
+        <div>Treasure v0.0.2</div>
       </q-toolbar>
     </q-header>
 
@@ -32,7 +32,7 @@
             :key="link.name"
             v-if="!link?.hidden"
             v-bind="link"
-            @muneClick="() => muneClick(link)"
+            :title="link.meta?.title"
           />
         </template>
       </q-list>
@@ -58,12 +58,19 @@ export default {
     return {
       leftDrawerOpen: false,
       essentialLinks: menuList,
-      title: "Treasure",
+      title: "主页",
     };
   },
   methods: {
-    muneClick(link) {
-      this.title = link.title;
+    // muneClick(link) {
+    //   this.title = link.meta.title;
+    // },
+  },
+  watch: {
+    $route: {
+      handler: function (val, oldVal) {
+        this.title = val.params?.title;
+      },
     },
   },
 };

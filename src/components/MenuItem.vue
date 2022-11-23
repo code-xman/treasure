@@ -3,6 +3,9 @@
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
+    <q-item-section v-if="iconfont" avatar>
+      <q-icon v-if="iconfont" class="iconfont" :class="iconfont" />
+    </q-item-section>
 
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
@@ -21,6 +24,10 @@ export default {
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+      default: "home",
+    },
 
     caption: {
       type: String,
@@ -36,11 +43,14 @@ export default {
       type: String,
       default: "",
     },
+    iconfont: {
+      type: String,
+    }
   },
   methods: {
     menuItemClick() {
-      this.$router.push(this.path)
-      this.$emit('muneClick')
+      this.$router.push({name: this.name, params: {title: this.title}});
+      this.$emit("muneClick");
     },
   },
 };
