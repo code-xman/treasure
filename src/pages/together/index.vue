@@ -44,6 +44,8 @@
         type="textarea"
         clearable
         clear-icon="close"
+        counter 
+        maxlength="120"
         :rules="[(val) => !!val || '必填']"
       />
     </q-form>

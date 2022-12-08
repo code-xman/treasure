@@ -131,6 +131,15 @@ const menuList = [
     },
     caption: '看看今天大家都在关注些什么',
   },
+  {
+    name: "lightPlate",
+    path: "/lightPlate",
+    iconfont: 'icon-control',
+    meta: {
+      title: "灯牌DIY",
+    },
+    caption: '可自制独一无二的个性灯牌',
+  },
 ];
 
 export const noHomeMenuList = menuList.filter(item => item.name !== 'home')
