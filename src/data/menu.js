@@ -140,6 +140,15 @@ const menuList = [
     },
     caption: '可自制独一无二的个性灯牌',
   },
+  {
+    name: "t-rex-runner",
+    path: "/t-rex-runner",
+    iconfont: 'icon-run',
+    meta: {
+      title: "小恐龙快跑",
+    },
+    caption: '快跑啊~快跑啊~嗷呜~~',
+  },
 ];
 
 export const noHomeMenuList = menuList.filter(item => item.name !== 'home')

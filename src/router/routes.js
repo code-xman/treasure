@@ -54,6 +54,11 @@ const routes = [
         path: "/lightPlate",
         component: () => import("pages/lightPlate/show.vue"),
       },
+      {
+        name: "t-rex-runner",
+        path: "/t-rex-runner",
+        component: () => import("pages/t-rex-runner/index.vue"),
+      },
     ],
   },
 
