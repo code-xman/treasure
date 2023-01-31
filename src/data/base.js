@@ -23,39 +23,40 @@ export const colorValues = [
   // "#EDE604",
 ];
 
+/** 用户信息 */
 export const userData = [
   {
-    name: "标哥",
+    name: "Z锦标",
     code: "zjb7046",
     password: "zjb7046",
   },
   {
-    name: "洁哥",
+    name: "Y洁",
     code: "yj7776",
     password: "yj7776",
   },
   {
-    name: "珂哥",
+    name: "Y珂",
     code: "yk8481",
     password: "yk8481",
   },
   {
-    name: "蘭哥",
+    name: "Y蘭",
     code: "yl6535",
     password: "yl6535",
   },
   {
-    name: "皮皮",
+    name: "S西波",
     code: "sxb4315",
     password: "sxb4315",
   },
   {
-    name: "小七",
+    name: "L佳余",
     code: "ljy3224",
     password: "ljy3224",
   },
   {
-    name: "勇哥",
+    name: "L勇",
     code: "ly1316",
     password: "ly1316",
   },
@@ -65,25 +66,25 @@ export const userData = [
     password: "sxz6668",
   },
 ];
-
+/** 邮件信息 */
 export const emailList = [
   {
-    name: "标哥",
+    name: "标",
     id: "876665117",
     email: "876665117@qq.com",
   },
   {
-    name: "洁哥",
+    name: "洁",
     id: "178703715",
     email: "178703715@qq.com",
   },
   {
-    name: "珂哥",
+    name: "珂",
     id: "2895781051",
     email: "2895781051@qq.com",
   },
   {
-    name: "蘭哥",
+    name: "蘭",
     id: "758875675",
     email: "758875675@qq.com",
   },
@@ -98,7 +99,7 @@ export const emailList = [
     email: "386414742@qq.com",
   },
   {
-    name: "勇哥",
+    name: "勇",
     id: "895013256",
     email: "895013256@qq.com",
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="fit column q-pa-md">
+  <div class="fit column q-pa-sm">
     <div class="col overflow-auto q-mb-sm q-pa-sm">
       <q-card
         v-for="item in dayList"

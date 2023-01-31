@@ -10,6 +10,11 @@ const routes = [
         component: () => import("pages/test/index.vue"),
       },
       {
+        name: "users",
+        path: "/users",
+        component: () => import("pages/users/index.vue"),
+      },
+      {
         name: "anniversaries",
         path: "/anniversaries",
         component: () => import("pages/anniversaries/index.vue"),
@@ -58,6 +63,11 @@ const routes = [
         name: "t-rex-runner",
         path: "/t-rex-runner",
         component: () => import("pages/t-rex-runner/index.vue"),
+      },
+      {
+        name: "dailyTask",
+        path: "/dailyTask",
+        component: () => import("pages/dailyTask/index.vue"),
       },
     ],
   },

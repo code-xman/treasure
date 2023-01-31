@@ -7,10 +7,12 @@
 
 // Configuration for your app
 // https://v1.quasar.dev/quasar-cli/quasar-conf-js
-
+const path = require('path')
 const ESLintPlugin = require('eslint-webpack-plugin')
 
-module.exports = function (/* ctx */) {
+module.exports = function (ctx) {
+  // console.log('process.env.NODE_ENV :>> ', process.env.NODE_ENV);
+
   return {
     // https://v1.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -24,6 +26,7 @@ module.exports = function (/* ctx */) {
     boot: [
       'i18n',
       'qweatherIcons',
+      'notify-defaults', // 全局提示 notify
     ],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -63,6 +66,8 @@ module.exports = function (/* ctx */) {
       // analyze: true,
 
       // Options below are automatically set depending on the env, set them if you want to override
+      env: require('./src/config/EnvParse.js')(),
+      
       // extractCSS: false,
 
       // https://v1.quasar.dev/quasar-cli/handling-webpack
@@ -70,6 +75,9 @@ module.exports = function (/* ctx */) {
       chainWebpack (chain) {
         chain.plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }])
+        
+        // 设置@别名
+        chain.resolve.alias.set('@', path.join(__dirname, 'src'))
       }
     },
 
@@ -77,7 +85,7 @@ module.exports = function (/* ctx */) {
     devServer: {
       https: false,
       port: 8080,
-      open: true, // opens browser window automatically
+      open: false, // opens browser window automatically
       // api代理开发，处理跨域
       proxy: { 
         // 将所有以 /coderutil 开头的请求代理到jsonplaceholder

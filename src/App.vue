@@ -19,7 +19,7 @@ export default {
   created() {
     // vConsole
     this.vConsole =
-      process.env.NODE_ENV === "development" ? new VConsole() : null;
+      process.env.NODE_TYPE === "development" ? new VConsole() : null;
       
     // iconfont
     this.$q.iconMapFn = (iconName) => {
