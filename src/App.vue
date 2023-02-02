@@ -7,6 +7,8 @@
 <script>
 import VConsole from "vconsole";
 import { anniversariesData } from "src/pages/anniversaries/data";
+import "@/mian";
+import { openDB, closeDB } from "@/utils/idb";
 
 export default {
   name: "App",
@@ -20,7 +22,7 @@ export default {
     // vConsole
     this.vConsole =
       process.env.NODE_TYPE === "development" ? new VConsole() : null;
-      
+
     // iconfont
     this.$q.iconMapFn = (iconName) => {
       // iconName是QIcon“name”属性的内容
@@ -36,9 +38,18 @@ export default {
       }
     };
   },
+  mounted() {
+    openDB("treasure", 1);
+
+  },
   beforeDestroy() {
+    // vConsole
     if (this.vConsole) {
       this.vConsole.destroy();
+    }
+    // IDB
+    if (this.IDB_T) {
+      closeDB();
     }
   },
 };
