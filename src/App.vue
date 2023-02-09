@@ -6,6 +6,7 @@
 
 <script>
 import VConsole from "vconsole";
+import dayjs from 'dayjs';
 import { anniversariesData } from "src/pages/anniversaries/data";
 import "@/mian";
 import { openDB, closeDB } from "@/utils/idb";
@@ -39,13 +40,14 @@ export default {
     };
   },
   mounted() {
-    openDB("treasure", 1);
-
+    if (process.env.NODE_TYPE !== "development") {
+      openDB("treasure", 2);
+    } 
   },
   beforeDestroy() {
     // vConsole
     if (this.vConsole) {
-      this.vConsole.destroy();
+      this.vConsole?.destroy();
     }
     // IDB
     if (this.IDB_T) {
