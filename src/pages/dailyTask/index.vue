@@ -31,9 +31,15 @@
           <q-btn flat color="primary" @click="() => handelUpdateTask(item)">
             修改
           </q-btn>
-          <q-btn flat color="deep-orange" @click="() => handelDeleteTask(item)">
-            删除
-          </q-btn>
+          <Confirm
+            :show="showDeleteConfirm"
+            @hide="handelHide"
+            @confirm="handelConfirm"
+          >
+            <q-btn flat color="deep-orange" @click="() => handelDeleteTask(item)">
+              删除
+            </q-btn>
+          </Confirm>
           <q-btn flat color="teal" @click="() => handelCompleteOnce(item)">
             完成一次
           </q-btn>
@@ -51,12 +57,6 @@
       />
     </div>
     
-    <Confirm
-      :show="showDeleteConfirm"
-      text="删除后无法恢复数据，请确认是否继续"
-      @hide="handelHide"
-      @confirm="handelConfirm"
-    />
     <q-dialog v-model="showAddFlag" maximized>
       <AddForm :type="type" :rowData="rowData" @closeModal="closeModal" />
     </q-dialog>

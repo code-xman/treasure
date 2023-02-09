@@ -1,4 +1,6 @@
 <template>
+  <div class="confirm">
+    <slot />
     <q-dialog
       v-model="model"
       persistent
@@ -23,6 +25,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+  </div>
 </template>
 
 <script>
@@ -37,7 +40,10 @@ export default {
       type: String,
       default: "是否确认操作",
     },
-    text: String,
+    text: {
+      type: String,
+      default: '删除后无法恢复数据，请确认是否继续',
+    },
   },
   data() {
     return {
@@ -45,8 +51,8 @@ export default {
     };
   },
   methods: {
-    handleHide(evt) {
-      this.$emit('hide', evt)
+    handleHide() {
+      this.$emit('hide')
     },
     handleConfirm() {
       this.$emit('confirm')
@@ -62,4 +68,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.confirm {
+  display: inline-flex;
+  vertical-align: middle;
+}
+</style>

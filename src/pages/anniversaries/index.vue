@@ -3,7 +3,7 @@
  * @Author: xiangjie
  * @Date: 2022-08-31 17:07:03
  * @LastEditors: xiangjie
- * @LastEditTime: 2023-01-31 15:57:26
+ * @LastEditTime: 2023-02-09 16:18:54
 -->
 <template>
   <div class="fit column q-pa-sm">
@@ -53,19 +53,32 @@
           <q-btn v-if="item.isSelfData" flat @click="() => handelUpdate(item)">
             修改
           </q-btn>
-          <q-btn v-if="item.isSelfData" flat @click="() => handelDelete(item)">
-            删除
-          </q-btn>
+          <Confirm
+            v-if="item.isSelfData"
+            :show="showDeleteConfirm"
+            @hide="handelHide"
+            @confirm="handelConfirm"
+          >
+            <q-btn flat @click="() => handelDelete(item)">
+              删除
+            </q-btn>
+          </Confirm>
         </q-card-actions>
       </q-card>
     </div>
     <div class="full-width flex justify-around">
-      <q-btn
-        class="shadow-3"
-        label="清除数据"
-        color="secondary"
-        @click="toDelData"
-      />
+      <Confirm
+        :show="showDeleteAllConfirm"
+        @hide="handelHide"
+        @confirm="handelConfirm"
+      >
+        <q-btn
+          class="shadow-3"
+          label="清除数据"
+          color="secondary"
+          @click="toDelData"
+        />
+      </Confirm>
       <!-- <q-btn
         class="shadow-3"
         label="保存数据"
@@ -89,12 +102,6 @@
     <q-dialog v-model="showAddFlag" maximized>
       <AddForm :type="type" :rowData="rowData" @closeModal="closeModal" />
     </q-dialog>
-    <Confirm
-      :show="showDeleteConfirm"
-      text="删除后无法恢复数据，请确认是否继续"
-      @hide="handelHide"
-      @confirm="handelConfirm"
-    />
   </div>
 </template>
 
@@ -119,6 +126,7 @@ export default {
       rowData: {},
       isDelAll: false,
       showDeleteConfirm: false,
+      showDeleteAllConfirm: false,
     };
   },
   computed: {
@@ -172,7 +180,11 @@ export default {
     /** 处理取消删除 */
     handelHide() {
       this.rowData = {};
-      this.showDeleteConfirm = false;
+      if (this.isDelAll) {
+        this.showDeleteAllConfirm = false;
+      } else {
+        this.showDeleteConfirm = false;
+      }
     },
     /** 处理确认删除 */
     handelConfirm() {
@@ -205,7 +217,7 @@ export default {
     /** 删除所有数据 */
     toDelData() {
       this.isDelAll = true;
-      this.showDeleteConfirm = true;
+      this.showDeleteAllConfirm = true;
     },
     /** 删除所有数据 */
     handelDelAll() {
@@ -218,7 +230,7 @@ export default {
         color: "teal",
       });
       this.rowData = {};
-      this.showDeleteConfirm = false;
+      this.showDeleteAllConfirm = false;
     },
     /** 保存数据到localStorage */
     toSaveData() {

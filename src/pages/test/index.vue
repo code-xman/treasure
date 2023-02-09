@@ -13,7 +13,13 @@
     <q-input outlined v-model="idb_v" label="idb_v" />
     <q-btn @click="openIDB">链接IDB</q-btn>
     <q-btn @click="closeDB">断开IDB</q-btn>
-    <q-btn @click="deleteIDB">删除IDB</q-btn>
+    <Confirm
+      :show="showDeleteConfirm"
+      @hide="() => (showDeleteConfirm = false)"
+      @confirm="handleDeleteIDB"
+    >
+      <q-btn @click="() => (showDeleteConfirm = true)">删除IDB</q-btn>
+    </Confirm>
     <q-input outlined v-model="idb_key" label="idb_key" />
     <q-btn @click="addPerson">增加person数据</q-btn>
     <q-btn @click="getPersonData">获取person数据</q-btn>
@@ -21,12 +27,6 @@
     <q-btn @click="getPerson"> 获取person_0 </q-btn>
     <q-btn @click="deletePerson">删除数person_0</q-btn>
     <!-- <q-btn @click="handleA">{{ v_a }}</q-btn> -->
-    <Confirm
-      :show="showDeleteConfirm"
-      text="删除后无法恢复数据，请确认是否继续"
-      @hide="() => showDeleteConfirm = false"
-      @confirm="handleDeleteIDB"
-    />
   </q-page>
 </template>
 
@@ -107,13 +107,10 @@ export default {
       openDB(this.idb_name, Number(this.idb_v) || 1);
     },
     closeDB,
-    deleteIDB() {
-      this.showDeleteConfirm = true;
-    },
     handleDeleteIDB() {
       if (!this.idb_name) return;
-      deleteDB(this.idb_name, res => {
-        if (res.status === 'success') {
+      deleteDB(this.idb_name, (res) => {
+        if (res.status === "success") {
           this.showDeleteConfirm = false;
         }
       });
