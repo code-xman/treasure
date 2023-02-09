@@ -16,6 +16,18 @@ const objStoreArr = [
       },
     ],
   },
+  // dailyTask
+  {
+    name: "dailyTask",
+    keyPath: "id",
+    createIndexs: [
+      {
+        name: "task",
+        attrName: "task",
+        setting: { unique: false },
+      },
+    ],
+  },
 ];
 
 /**
@@ -81,6 +93,38 @@ export const closeDB = () => {
   }
 };
 
+/** 删除数据库 */
+export const deleteDB = (databaseName, callback) => {
+  const request = window.indexedDB.deleteDatabase(databaseName);
+  
+  request.onerror = function (event) {
+
+    Notify.create({
+      message: "删除数据库失败",
+      color: "warning",
+    });
+
+    callback?.({
+      status: 'fail',
+      message: '删除数据库失败',
+      data: null,
+    })
+  };
+  request.onsuccess = function (event) {
+
+    Notify.create({
+      message: "删除数据库成功",
+      color: "teal",
+    });
+
+    callback?.({
+      status: 'success',
+      message: '删除数据库成功',
+      data: null,
+    })
+  };
+};
+
 /** 
  * 创建表
  * @param   {string}    name          表名
@@ -135,9 +179,9 @@ const createDB_ObjectStore = (params) => {
 /**
  * 增加IDB数据
  * @param   {string}    storeName 表名
- * @param   {number}    opType    操作模式（"只读"--readonly或"读写"--readwrite）
  * @param   {any}       rowData   添加的具体数据
  * @param   {function}  callback  回调函数
+ * @param   {number}    opType    操作模式（"只读"--readonly或"读写"--readwrite）
  */
 export const DB_addData = (storeName, rowData, callback, opType = "readwrite") => {
   try {
@@ -157,32 +201,38 @@ export const DB_addData = (storeName, rowData, callback, opType = "readwrite") =
     // console.log('request :>> ', request);
 
     request.onsuccess = function (event) {
-      Notify.create({
+      const res = {
+        status: 'success',
         message: '添加数据成功',
-        color: "teal",
-      });
+        data: null,
+      }
+      callback?.(res)
     };
 
     request.onerror = function (event) {
-      Notify.create({
+      const res = {
+        status: 'fail',
         message: '添加数据失败',
-        color: "warning",
-      });
+        data: null,
+      }
+      callback?.(res)
     };
   } catch (error) {
-    Notify.create({
+    const res = {
+      status: 'fail',
       message: `${error}`,
-      color: "warning",
-    });
+      data: null,
+    }
+    callback?.(res)
   }
 };
 
 /**
  * 修改IDB数据
  * @param   {string}    storeName 表名
- * @param   {number}    opType    操作模式（"只读"--readonly或"读写"--readwrite）
- * @param   {any}       rowData   添加的具体数据
+ * @param   {any}       rowData   修改的具体数据
  * @param   {function}  callback  回调函数
+ * @param   {number}    opType    操作模式（"只读"--readonly或"读写"--readwrite）
  */
 export const DB_updateData = (storeName, rowData, callback, opType = "readwrite") => {
   try {
@@ -202,42 +252,41 @@ export const DB_updateData = (storeName, rowData, callback, opType = "readwrite"
     // console.log('request :>> ', request);
 
     request.onsuccess = function (event) {
-      Notify.create({
-        message: "修改数据成功",
-        color: "teal",
-      });
+        const res = {
+          status: 'success',
+          message: '修改数据成功',
+          data: null,
+        }
+        callback?.(res)
     };
 
     request.onerror = function (event) {
-      Notify.create({
-        message: "修改数据失败",
-        color: "warning",
-      });
+      const res = {
+        status: 'fail',
+        message: '修改数据失败',
+        data: null,
+      }
+      callback?.(res)
     };
   } catch (error) {
-    Notify.create({
+    const res = {
+      status: 'fail',
       message: `${error}`,
-      color: "warning",
-    });
+      data: null,
+    }
+    callback?.(res)
   }
 };
 
 /**
  * 获取IDB对应表所有数据
- * @param   {string} storeName  表名
- * @return  {any}               对应表所有的数据
+ * @param   {string}    storeName 表名
+ * @param   {function}  callback  回调方法
+ * @return  {any}                 对应表所有的数据
  */
 export const DB_getAllData = (storeName, callback) => {
   try {
-    if (!Vue.prototype.IDB_T) {
-      const result = {
-        status: "fail",
-        data: null,
-        message: "查询数据失败:IDB数据库未链接",
-      };
-      callback?.(result);
-      return;
-    }
+    if (!Vue.prototype.IDB_T) throw "查询数据失败:IDB数据库未链接";
     // 最终结果
     const res = [];
     // 获取数据库的表对象
