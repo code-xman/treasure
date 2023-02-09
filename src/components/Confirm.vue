@@ -6,7 +6,7 @@
       transition-hide="scale"
       @hide="handleHide"
     >
-      <q-card class="bg-accent text-white" style="width: 300px">
+      <q-card class="bg-warning text-white" style="width: 300px">
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">{{ title }}</div>
           <q-space />
@@ -17,7 +17,7 @@
           {{ text }}
         </q-card-section>
   
-        <q-card-actions align="right" class="bg-white text-accent">
+        <q-card-actions align="right" class="bg-white text-warning">
           <q-btn flat label="取消" v-close-popup />
           <q-btn flat label="确认" @click="handleConfirm" />
         </q-card-actions>
