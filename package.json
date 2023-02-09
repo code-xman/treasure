@@ -23,6 +23,7 @@
     "babel-plugin-transform-vue-jsx": "^3.7.0",
     "clipboard": "^2.0.11",
     "core-js": "^3.6.5",
+    "dayjs": "^1.11.7",
     "node-schedule": "^2.1.0",
     "push.js": "^1.0.12",
     "quasar": "^1.0.0",
