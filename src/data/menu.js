@@ -168,6 +168,16 @@ const menuList = [
     },
     caption: "这是每日的任务，记得完成哦",
   },
+  {
+    name: "setting",
+    path: "/setting",
+    iconfont: "icon-setting",
+    meta: {
+      title: "设置",
+    },
+    caption: "关于app的全局设置",
+    hidden: !isDev,
+  },
 ];
 
 export const noHomeMenuList = menuList.filter((item) => item.name !== "home");

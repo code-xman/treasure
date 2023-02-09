@@ -69,6 +69,11 @@ const routes = [
         path: "/dailyTask",
         component: () => import("pages/dailyTask/index.vue"),
       },
+      {
+        name: "setting",
+        path: "/setting",
+        component: () => import("pages/setting/index.vue"),
+      },
     ],
   },
 

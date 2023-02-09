@@ -37,25 +37,35 @@ const objStoreArr = [
  * @param   {Function}  callback      成功回调函数
  */
 export const openDB = (databaseName, version, callback) => {
-  // 打开/链接数据库
+  // 打开/连接数据库
   const request = window.indexedDB.open(databaseName, version);
 
   // 失败
   request.onerror = function (event) {
     Notify.create({
-      message: "链接数据库失败",
+      message: "连接数据库失败",
       color: "warning",
+    });
+    callback?.({
+      status: 'fail',
+      message: '连接数据库失败',
+      data: null,
     });
   };
   // 成功
   request.onsuccess = function (event) {
     // 获取数据
     Vue.prototype.IDB_T = request.result;
-    callback?.();
 
     Notify.create({
-      message: "链接数据库成功",
+      message: "连接数据库成功",
       color: "teal",
+    });
+
+    callback?.({
+      status: 'success',
+      message: '连接数据库成功',
+      data: null,
     });
   };
   // 升级 指定的版本号，大于数据库的实际版本号，就会发生数据库升级事件
