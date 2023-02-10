@@ -1,5 +1,7 @@
 <template>
   <q-page class="fit overflow-auto q-pa-sm">
+    <q-input outlined v-model="idb_name" label="idb_name" class="q-mb-sm" />
+    <q-input outlined v-model="idb_v" label="idb_v" class="q-mb-sm" />
     <div class="q-pa-sm q-gutter-sm" >
       <Confirm
         :show="openDBConfirm"
@@ -13,7 +15,7 @@
       </Confirm>
       <Confirm
         :show="delDBConfirm"
-        text="删除数据库后无法恢复数据，除非您明确删除数据库的后果，否则我们不建议您点击删除数据库。请确认是否继续"
+        text="删除数据库后无法恢复数据，除非您明确删除数据库的后果，否则我们不建议您这么做。请确认是否继续"
         @hide="() => (delDBConfirm = false)"
         @confirm="manualDelDB"
       >
@@ -32,20 +34,22 @@ export default {
   components: { Confirm },
   data() {
     return {
+      idb_name: 'treasure',
+      idb_v: process.env.DB_V,
       openDBConfirm: false,
       delDBConfirm: false,
     };
   },
   methods: {
     manualOpenDB() {
-      openDB("treasure", 2, (res) => {
+      openDB(this.idb_name, Number(this.idb_v), (res) => {
         if (res.status === "success") {
           this.openDBConfirm = false;
         }
       });
     },
     manualDelDB() {
-      deleteDB("treasure", (res) => {
+      deleteDB(this.idb_name, (res) => {
         if (res.status === "success") {
           this.delDBConfirm = false;
         }

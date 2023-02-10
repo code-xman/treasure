@@ -41,7 +41,7 @@ export default {
   },
   mounted() {
     if (process.env.NODE_TYPE !== "development") {
-      openDB("treasure", 2);
+      openDB("treasure", process.env.DB_V);
     } 
   },
   beforeDestroy() {
