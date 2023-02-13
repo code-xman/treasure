@@ -176,7 +176,7 @@ export default {
       this.getAllTaskList();
       this.showDeleteConfirm = false;
     },
-    /** 处理确认删除 */
+    /** 处理点击删除 */
     handelDeleteTask(item) {
       this.rowData = { ...item };
       this.showDeleteConfirm = true;

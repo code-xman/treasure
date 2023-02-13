@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { DB_addData, DB_updateData } from "@/utils/idb";
+
 export default {
   name: "AddForm",
   props: {
@@ -132,37 +134,33 @@ export default {
     };
   },
   methods: {
+    // DB 新增/修改数据回调
+    callbackDB (res) {
+      this.$q.notify({
+        message: res.message,
+        color: res.status === "success" ? "teal" : "warning",
+      });
+      if (res.status === "success") {
+        this.$emit("closeModal");
+      }
+    },
     async onSubmit() {
       const validateRes = await this.$refs.form.validate();
       if (validateRes) {
-        const anniversariesData = [
-          ...this.$store.state.myData.anniversariesData,
-        ];
+        const data = {
+          ...this.rowData,
+          ...this.formValue,
+        };
         if (this.type === "add") {
-          const data = {
-            ...this.formValue,
-            key: new Date().getTime().toString(),
-            /** 是否是用户私有数据 */
-            isSelfData: true,
-          };
-          anniversariesData.push(data);
-        } else if (this.type === "update") {
-          const index = this.$store.state.myData.anniversariesData.findIndex(
-            (item) => item.key === this.rowData.key
-          );
-          const data = { ...this.rowData, ...this.formValue };
-          if (index >= 0) {
-            anniversariesData.splice(index, 1, data);
-          }
-        }
+          // 给id赋值
+          data.key = new Date().getTime().toString();
+          // 是否是用户私有数据
+          data.isSelfData =true;
 
-        this.$store.commit("myData/updateAnniversariesData", anniversariesData);
-        this.$q.notify({
-          position: "top",
-          message: "操作成功",
-          color: "teal",
-        });
-        this.$emit("closeModal");
+          DB_addData("anniversaries", data, this.callbackDB);
+        } else if (this.type === "update") {
+          DB_updateData("anniversaries", data, this.callbackDB);
+        }
       }
     },
   },

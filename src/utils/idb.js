@@ -16,6 +16,11 @@ const objStoreArr = [
       },
     ],
   },
+  // anniversaries
+  {
+    name: "anniversaries",
+    keyPath: "key",
+  },
   // dailyTask
   {
     name: "dailyTask",
@@ -162,7 +167,7 @@ const createDB_ObjectStore = (params) => {
       });
       // createIndex 为新建索引，后续就可以通过索引查询数据；
       // 索引名称、索引所在的属性、配置对象（说明该属性是否包含重复的值）。
-      createIndexs.forEach((item) => {
+      createIndexs?.forEach((item) => {
         objectStore.createIndex(item.name, item.attrName, {
           ...item.setting,
         });

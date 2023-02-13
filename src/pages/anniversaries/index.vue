@@ -3,10 +3,10 @@
  * @Author: xiangjie
  * @Date: 2022-08-31 17:07:03
  * @LastEditors: xiangjie
- * @LastEditTime: 2023-02-09 16:18:54
+ * @LastEditTime: 2023-02-13 16:09:43
 -->
 <template>
-  <div class="fit column q-pa-sm">
+  <div class="fit column q-pa-sm q-pb-md">
     <div class="col overflow-auto q-mb-sm q-pa-sm">
       <q-card
         v-for="item in dayList"
@@ -67,7 +67,7 @@
       </q-card>
     </div>
     <div class="full-width flex justify-around">
-      <Confirm
+      <!-- <Confirm
         :show="showDeleteAllConfirm"
         @hide="handelHide"
         @confirm="handelConfirm"
@@ -78,14 +78,8 @@
           color="secondary"
           @click="toDelData"
         />
-      </Confirm>
-      <!-- <q-btn
-        class="shadow-3"
-        label="保存数据"
-        color="secondary"
-        @click="toSaveData"
-      /> -->
-      <q-btn class="shadow-3" label="添加" color="secondary" @click="addData" />
+      </Confirm> -->
+      <q-btn rounded class="flex-1 shadow-3" label="添加" color="secondary" @click="addData" />
     </div>
     <q-dialog v-model="showActionFlag">
       <q-card class="fit">
@@ -108,9 +102,10 @@
 <script>
 // import Push from "push.js";
 // import schedule from "node-schedule";
+import { DB_updateData, DB_getAllData, DB_deleteByKey } from "@/utils/idb";
+import Confirm from "src/components/Confirm.vue";
 import { dayData, handleDayData } from "./data";
 import AddForm from "./AddForm.vue";
-import Confirm from "src/components/Confirm.vue";
 
 export default {
   name: "anniversaries",
@@ -118,6 +113,7 @@ export default {
   data() {
     return {
       dayData,
+      selfDayData: [],
       // scheduleJ: null,
       showActionFlag: false,
       actionContent: "",
@@ -133,13 +129,26 @@ export default {
     dayList() {
       const list = [
         ...this.dayData,
-        ...this.$store.state.myData.anniversariesData,
+        ...this.selfDayData,
       ];
       const res = handleDayData(list);
       return res;
     },
   },
   methods: {
+    /** 获取所有数据 */
+    getAllData() {
+      DB_getAllData("anniversaries", (res) => {
+        if (res.status === "success") {
+          this.selfDayData = res.data;
+        } else {
+          this.$q.notify({
+            message: res.message,
+            color: "waring",
+          });
+        }
+      });
+    },
     showAction(actionData) {
       if (!actionData) return;
       this.actionContent = actionData;
@@ -147,8 +156,8 @@ export default {
     },
     /** 新增数据 */
     addData() {
-      const len = this.$store.state.myData.anniversariesData.length;
-      if (len >= 20) {
+      const len = this.selfDayData.length;
+      if (len >= 50) {
         this.$q.notify({
           position: "top",
           message: "存储数据已达上线",
@@ -161,7 +170,7 @@ export default {
     },
     /** 关闭弹框 */
     closeModal() {
-      this.toSaveData();
+      this.getAllData();
       this.rowData = {};
       this.showAddFlag = false;
     },
@@ -196,23 +205,10 @@ export default {
     },
     /** 删除单条 */
     handelDelOne() {
-      const anniversariesData = [...this.$store.state.myData.anniversariesData];
-      const index = anniversariesData.findIndex(
-        (item) => item.key === this.rowData.key
-      );
-      if (index >= 0) {
-        anniversariesData.splice(index, 1);
-        this.$store.commit("myData/updateAnniversariesData", anniversariesData);
-        this.toSaveData();
-
-        this.$q.notify({
-          position: "top",
-          message: "删除成功",
-          color: "teal",
-        });
-        this.rowData = {};
-        this.showDeleteConfirm = false;
-      }
+      DB_deleteByKey("anniversaries", this.rowData.key);
+      this.rowData = {};
+      this.showDeleteConfirm = false;
+      this.getAllData();
     },
     /** 删除所有数据 */
     toDelData() {
@@ -220,32 +216,10 @@ export default {
       this.showDeleteAllConfirm = true;
     },
     /** 删除所有数据 */
-    handelDelAll() {
-      this.$store.commit("myData/updateAnniversariesData", []);
-      this.toSaveData();
-
-      this.$q.notify({
-        position: "top",
-        message: "删除成功",
-        color: "teal",
-      });
-      this.rowData = {};
-      this.showDeleteAllConfirm = false;
-    },
-    /** 保存数据到localStorage */
-    toSaveData() {
-      localStorage.setItem(
-        "anniversariesData",
-        JSON.stringify(this.$store.state.myData.anniversariesData)
-      );
-    },
+    handelDelAll() {},
   },
   mounted() {
-    // 同步localStorage的数据
-    const localData = JSON.parse(localStorage.getItem("anniversariesData"));
-    if (localData) {
-      this.$store.commit("myData/updateAnniversariesData", [...localData]);
-    }
+    this.getAllData();
   },
 };
 </script>
