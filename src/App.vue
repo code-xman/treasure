@@ -40,9 +40,9 @@ export default {
     };
   },
   mounted() {
-    // if (process.env.NODE_TYPE !== "development") {
+    if (process.env.NODE_TYPE !== "development") {
       openDB("treasure", process.env.DB_V);
-    // } 
+    } 
   },
   beforeDestroy() {
     // vConsole

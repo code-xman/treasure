@@ -70,6 +70,11 @@ const routes = [
         component: () => import("pages/dailyTask/index.vue"),
       },
       {
+        name: "logicalThinking",
+        path: "/logicalThinking",
+        component: () => import("pages/logicalThinking/index.vue"),
+      },
+      {
         name: "setting",
         path: "/setting",
         component: () => import("pages/setting/index.vue"),

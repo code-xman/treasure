@@ -168,6 +168,16 @@ const menuList = [
     },
     caption: "这是每日的任务，记得完成哦",
   },
+  
+  {
+    name: "logicalThinking",
+    path: "/logicalThinking",
+    iconfont: "icon-app",
+    meta: {
+      title: "逻辑思维",
+    },
+    caption: "和小伙伴来一场逻辑思维风暴",
+  },
   {
     name: "setting",
     path: "/setting",

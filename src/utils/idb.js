@@ -173,10 +173,10 @@ const createDB_ObjectStore = (params) => {
         });
       });
 
-      Notify.create({
-        message: `创建${name}表成功`,
-        color: "teal",
-      });
+      // Notify.create({
+      //   message: `创建${name}表成功`,
+      //   color: "teal",
+      // });
     } else {
       Notify.create({
         message: `已经存在${name}表`,
