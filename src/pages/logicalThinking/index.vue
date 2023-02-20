@@ -263,7 +263,6 @@ export default {
   }
 }
 .blocks {
-  opacity: 0;
   justify-content: space-around;
   align-content: center;
   .block {
