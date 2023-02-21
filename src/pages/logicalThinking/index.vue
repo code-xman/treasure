@@ -120,6 +120,7 @@ export default {
           waiteTime: 0,
         });
       }
+      this.result = '';
     },
     // 移动fab
     moveFab(ev) {
@@ -183,12 +184,8 @@ export default {
         if (item.id === block.id) {
           return {
             ...block,
-            // 未落子或自己区域直接赋值，对手区则清空
             value: this.nowHandler,
-            waiteTime:
-              !block.value || block.value === this.nowHandler
-                ? this.needWaiteTime
-                : 0,
+            waiteTime: this.needWaiteTime,
           };
         }
         return {
