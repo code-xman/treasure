@@ -121,6 +121,7 @@ export default {
         });
       }
       this.result = '';
+      this.nowHandler = "circle";
     },
     // 移动fab
     moveFab(ev) {
