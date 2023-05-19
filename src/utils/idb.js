@@ -3,7 +3,7 @@ import Vue from "vue";
 import { Notify } from "quasar";
 
 /** IDB表-数组 */
-const objStoreArr = [
+export const objStoreArr = [
   // person
   {
     name: "person",

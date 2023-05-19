@@ -64,8 +64,8 @@ export default {
       },
       /** IDB数据库 */
       IDB: null,
-      idb_name: "",
-      idb_v: "",
+      idb_name: "treasure",
+      idb_v: "3",
       idb_key: "",
     };
   },
