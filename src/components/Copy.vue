@@ -3,7 +3,7 @@
  * @Author: xiangjie
  * @Date: 2023-01-31 10:55:02
  * @LastEditors: xiangjie
- * @LastEditTime: 2023-01-31 13:56:03
+ * @LastEditTime: 2023-05-19 19:47:51
 -->
 <template>
   <div class="copy">
@@ -39,7 +39,7 @@ export default {
       this.$q.notify({
         position: "top",
         message: "复制成功",
-        color: "positive",
+        color: "teal",
       });
     },
     handleError() {
