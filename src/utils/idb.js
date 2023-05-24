@@ -7,6 +7,7 @@ export const objStoreArr = [
   // person
   {
     name: "person",
+    title: '测试人数据',
     keyPath: "id",
     createIndexs: [
       {
@@ -19,11 +20,13 @@ export const objStoreArr = [
   // anniversaries
   {
     name: "anniversaries",
+    title: '记零日数据',
     keyPath: "key",
   },
   // dailyTask
   {
     name: "dailyTask",
+    title: '每日任务',
     keyPath: "id",
     createIndexs: [
       {
