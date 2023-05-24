@@ -3,7 +3,7 @@
  * @Author: xiangjie
  * @Date: 2023-01-31 10:55:02
  * @LastEditors: xiangjie
- * @LastEditTime: 2023-05-19 19:47:51
+ * @LastEditTime: 2023-05-23 15:53:20
 -->
 <template>
   <div class="copy">
@@ -24,6 +24,10 @@ export default {
   name: "Copy",
   props: {
     content: [String, Number],
+    ErrMsg: {
+      type: String,
+      default: "复制失败，请手动复制",
+    },
     showIcon: {
       type: Boolean,
       default: true,
@@ -45,7 +49,7 @@ export default {
     handleError() {
       this.$q.notify({
         position: "top",
-        message: "复制失败，请手动复制",
+        message: this.ErrMsg,
         color: "warning",
       });
     },
