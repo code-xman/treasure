@@ -1,4 +1,4 @@
-import { get } from "./http";
+import { get, post } from "./http";
 
 /** 和风天气的key */
 const qweather_key = 'd5bd83ff416c44b3bc86821f81450c17';
@@ -20,6 +20,15 @@ export const apiHitokoto = async () => {
 /** 每日一文接口 */
 export const apiArticleRandom = async () => {
   const res = await get("https://interface.meiriyiwen.com/article/random", {dev: 1});
+  if (res.status === 200) {
+    return { ...res.data.data, status: res.status };
+  }
+  return { status: res.status };
+};
+
+export const apiAlapiOne = async () => {
+  const res = await post("https://v2.alapi.cn/api/one", {token: 'LwExDtUWhF3rH5ib'});
+  
   if (res.status === 200) {
     return { ...res.data.data, status: res.status };
   }

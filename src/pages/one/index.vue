@@ -8,7 +8,9 @@
     >
       <q-card-section>
         <div class="text-h6 q-mb-sm">{{ cardData[item].title }}</div>
-        <div class="text-subtitle2">{{ cardData[item].text }}</div>
+        <div v-if="cardData[item].text" class="text-subtitle2">
+          {{ cardData[item].text }}
+        </div>
       </q-card-section>
       <q-card-section v-if="cardData[item].from" class="text-right">
         {{ `${cardData[item].from_who} 《${cardData[item].from}》` }}
@@ -41,25 +43,23 @@
 <script>
 import { toDateString } from "xe-utils";
 import { apiChp, apiDu } from "src/api/shadiao";
-import { apiHitokoto, apiArticleRandom } from "src/api/publicInterface";
+import {
+  apiHitokoto,
+  apiArticleRandom,
+  apiAlapiOne,
+} from "src/api/publicInterface";
 
 export default {
   name: "one",
   data() {
-    const typeObj = {
-      chp: "彩虹糖",
-      du: "毒鸡汤",
-      hitokoto: "一言",
-      article: "一文",
-    };
     return {
-      typeObj,
-      cardList: [
-        'chpObj',
-        'duObj',
-        'hitokotoObj',
-        'articleObj',
-      ],
+      typeObj: {
+        chp: "彩虹糖",
+        du: "毒鸡汤",
+        hitokoto: "一言",
+        article: "一文",
+      },
+      cardList: ["chpObj", "duObj", "hitokotoObj", "articleObj"],
       cardData: {
         chpObj: {
           key: "chp",
@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     async init() {
-      this.$q.loading.show()
+      this.$q.loading.show();
       try {
         await this.getChp();
         await this.getDu();
@@ -113,62 +113,78 @@ export default {
           color: "warning",
         });
       } finally {
-        this.$store.commit('myData/updateOneData', {...this.cardData, hasData: true})
-        this.$q.loading.hide()
+        this.$store.commit("myData/updateOneData", {
+          ...this.cardData,
+          hasData: true,
+        });
+        this.$q.loading.hide();
       }
     },
     // 获取彩虹糖
     async getChp() {
-      const res = await apiChp();
-      if (res.status === 200) {
-        this.cardData['chpObj'].text = res.text;
-      } else {
+      try {
+        const res = await apiChp();
+        if (res.status === 200) {
+          this.cardData["chpObj"].text = res.text;
+        }
+      } catch (error) {
+        this.cardList = this.cardList.filter((c) => c !== "chp");
         throw "chp";
       }
     },
     // 获取毒鸡汤
     async getDu() {
-      const res = await apiDu();
-      if (res.status === 200) {
-        this.cardData['duObj'].text = res.text;
-      } else {
+      try {
+        const res = await apiDu();
+        if (res.status === 200) {
+          this.cardData["duObj"].text = res.text;
+        }
+      } catch (error) {
+        this.cardList = this.cardList.filter((c) => c !== "du");
         throw "du";
       }
     },
     // 获取一言
     async getHitokoto() {
-      const res = await apiHitokoto();
-      if (res.status === 200) {
-        this.cardData['hitokotoObj'] = {
-          ...this.cardData['hitokotoObj'],
-          text: res.hitokoto,
-          from: res.from,
-          from_who: res.from_who || "",
-        };
-      } else {
+      try {
+        const res = await apiHitokoto();
+        if (res.status === 200) {
+          this.cardData["hitokotoObj"] = {
+            ...this.cardData["hitokotoObj"],
+            text: res.hitokoto,
+            from: res.from,
+            from_who: res.from_who || "",
+          };
+        }
+      } catch (error) {
+        this.cardList = this.cardList.filter((c) => c !== "hitokoto");
         throw "hitokoto";
       }
     },
     // 获取一文
     async getArticleDay() {
-      // const date = toDateString(new Date(), "yyyyMMdd");
-      const res = await apiArticleRandom();
-      if (res.status === 200) {
-        this.cardData['articleObj'] = {
-          ...this.cardData['articleObj'],
-          text: `${res.digest}...`,
-          from: res.title,
-          from_who: res.author || "",
-          content: res.content,
-        };
-      } else {
+      try {
+        // const date = toDateString(new Date(), "yyyyMMdd");
+        // const res = await apiArticleRandom();
+        const res = await apiAlapiOne();
+        if (res.status === 200) {
+          this.cardData["articleObj"] = {
+            ...this.cardData["articleObj"],
+            // text: `${res.digest}...`,
+            from: res.title,
+            from_who: res.author || "",
+            content: res.content?.split("<p> </p>")?.[1],
+          };
+        }
+      } catch (error) {
+        this.cardList = this.cardList.filter((c) => c !== "articleObj");
         throw "article";
       }
     },
   },
   mounted() {
     if (this.$store.state.myData.oneData.hasData) {
-      this.cardData = {...this.$store.state.myData.oneData}
+      this.cardData = { ...this.$store.state.myData.oneData };
     } else {
       this.init();
     }

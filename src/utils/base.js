@@ -69,3 +69,13 @@ export const toReadFile = (fileValue, callback) => {
   };
   render.readAsText(fileValue);
 };
+
+// 判断是否为空
+export const isEmpty = (params) => {
+  if (params instanceof Array) {
+    return params.length === 0;
+  } else if (typeof params === 'object' && params) {
+    return JSON.stringify(params) === '{}';
+  }
+  return ['', undefined, null].includes(params);
+};
