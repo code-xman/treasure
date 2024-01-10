@@ -6,11 +6,11 @@
   "author": "xiangjie <xiangjie@tansun.com.cn>",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development quasar dev",
-    "dev:test": "cross-env NODE_ENV=test quasar dev",
-    "dev:prod": "cross-env NODE_ENV=production quasar dev",
-    "build:dev": "cross-env NODE_ENV=development quasar build",
-    "build:prod": "cross-env NODE_ENV=production quasar build",
+    "dev": "cross-env NODE_ENV=development && set NODE_OPTIONS=--openssl-legacy-provider && quasar dev",
+    "dev:test": "cross-env NODE_ENV=test && set NODE_OPTIONS=--openssl-legacy-provider && quasar dev",
+    "dev:prod": "cross-env NODE_ENV=production && set NODE_OPTIONS=--openssl-legacy-provider && quasar dev",
+    "build:dev": "cross-env NODE_ENV=development && set NODE_OPTIONS=--openssl-legacy-provider && quasar build",
+    "build:prod": "cross-env NODE_ENV=production && set NODE_OPTIONS=--openssl-legacy-provider && quasar build",
     "build:pwa": "quasar build -m pwa",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
