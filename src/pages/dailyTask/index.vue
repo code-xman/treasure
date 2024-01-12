@@ -24,7 +24,9 @@
               /
               {{ item.dayTimes }}
             </div>
-            <div class="isDue q-px-xs">{{ item.isDue ? "正向任务" : "反向任务" }}</div>
+            <div class="isDue q-px-xs">
+              {{ item.isDue ? "正向任务" : "反向任务" }}
+            </div>
           </div>
           <div class="text-right">开始于{{ item.stratDate }}</div>
         </q-card-section>
@@ -111,7 +113,7 @@ export default {
         /** 每日需完成次数 */
         dayTimes: 1,
         /** 是否正向 */
-        isDue: true,
+        isDue: true, // 反向任务，完成则增加未完成，主要是处理禁止任务（eg.不要做...）
         /** 完成详情 */
         detail: {},
       },
@@ -131,7 +133,33 @@ export default {
     getAllTaskList() {
       DB_getAllData("dailyTask", (res) => {
         if (res.status === "success") {
-          this.taskList = res.data;
+          this.taskList = res.data.map((item) => {
+            const days = Math.ceil(
+              (new Date().getTime() - new Date(item.stratDate)) /
+                (1000 * 60 * 60 * 24)
+            );
+            const parts = this.parts;
+            if (item.isDue) {
+              // 正向
+              if (item.detail[parts[0]]?.[parts[1]]?.[parts[2]].isComplete) {
+                // 当天 已 完成
+                item.unComplete = days - item.complete;
+              } else {
+                // 当天 未 完成
+                item.unComplete = days - item.complete - 1;
+              }
+            } else {
+              // 反向
+              if (!item.detail[parts[0]]?.[parts[1]]?.[parts[2]].isComplete) {
+                // 当天 已 未完成
+                item.complete = days - item.unComplete;
+              } else {
+                // 当天 未 未完成
+                item.complete = days - item.unComplete - 1;
+              }
+            }
+            return item;
+          });
         } else {
           this.$q.notify({
             message: res.message,

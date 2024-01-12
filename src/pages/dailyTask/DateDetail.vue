@@ -11,7 +11,7 @@
           :title="date"
           :subtitle="rowData.task"
           :events="eventsFn"
-          :event-color="'teal'"
+          :event-color="rowData.isDue ? 'teal' : 'negative'"
           :options="filterOption"
         />
         <div class="full-width">
@@ -70,7 +70,7 @@ export default {
       const parts = date?.split("/");
       const res =
         this.rowData.detail[parts[0]]?.[parts[1]]?.[parts[2]]?.isComplete;
-      return res || false;
+      return this.rowData.isDue ? !!res : !res;
     },
     filterOption(date) {
       return date >= this.rowData.stratDate && date <= dayjs(new Date()).format("YYYY/MM/DD");
