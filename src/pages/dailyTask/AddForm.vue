@@ -62,6 +62,7 @@
         <!-- 是否正向 -->
         <q-toggle
           v-model="formValue.isDue"
+          :disable="type !== 'add'"
           :label="formValue.isDue ? '正向任务' : '反向任务'"
           left-label
           color="primary"
