@@ -59,6 +59,14 @@
             </q-icon>
           </template>
         </q-input>
+        <!-- 是否正向 -->
+        <q-toggle
+          v-model="formValue.isDue"
+          :label="formValue.isDue ? '正向任务' : '反向任务'"
+          left-label
+          color="primary"
+          keep-color
+        />
       </q-form>
     </q-card-section>
 
@@ -75,7 +83,7 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import { DB_addData, DB_updateData } from "@/utils/idb";
 
 export default {
@@ -92,6 +100,7 @@ export default {
         complete: 0,
         unComplete: 0,
         dayTimes: 1,
+        isDue: true,
         detail: {},
       }),
     },
@@ -111,7 +120,10 @@ export default {
         },
         rules: [
           (val) =>
-            (!!val && val >= 1 && val <= 100 && !val.toString().includes(".")) ||
+            (!!val &&
+              val >= 1 &&
+              val <= 100 &&
+              !val.toString().includes(".")) ||
             "需填写1~100的整数",
         ],
       },
@@ -143,12 +155,13 @@ export default {
         task: "",
         dayTimes: 1,
         bgColor: "",
+        isDue: true,
       },
     };
   },
   methods: {
     // DB 新增/修改数据回调
-    callbackDB (res) {
+    callbackDB(res) {
       this.$q.notify({
         message: res.message,
         color: res.status === "success" ? "teal" : "warning",
@@ -170,7 +183,7 @@ export default {
           // 给id赋值
           data.id = new Date().getTime().toString();
           // 初始日期赋值
-          data.stratDate = dayjs(new Date()).format('YYYY/MM/DD');
+          data.stratDate = dayjs(new Date()).format("YYYY/MM/DD");
 
           DB_addData("dailyTask", data, this.callbackDB);
         } else if (this.type === "update") {

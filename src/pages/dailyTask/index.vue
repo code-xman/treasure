@@ -14,10 +14,17 @@
         >
           <div class="text-h6">{{ item.task }}</div>
           <div>已完成: {{ item.complete }}, 未完成: {{ item.unComplete }}</div>
-          <div>
-            今日完成度:
-            {{ item.detail[parts[0]]?.[parts[1]]?.[parts[2]]?.completeTimes || 0 }} /
-            {{ item.dayTimes }}
+          <div class="flex justify-between">
+            <div>
+              今日完成度:
+              {{
+                item.detail[parts[0]]?.[parts[1]]?.[parts[2]]?.completeTimes ||
+                0
+              }}
+              /
+              {{ item.dayTimes }}
+            </div>
+            <div class="isDue q-px-xs">{{ item.isDue ? "正向任务" : "反向任务" }}</div>
           </div>
           <div class="text-right">开始于{{ item.stratDate }}</div>
         </q-card-section>
@@ -36,7 +43,11 @@
             @hide="handelHide"
             @confirm="handelConfirm"
           >
-            <q-btn flat color="deep-orange" @click="() => handelDeleteTask(item)">
+            <q-btn
+              flat
+              color="deep-orange"
+              @click="() => handelDeleteTask(item)"
+            >
               删除
             </q-btn>
           </Confirm>
@@ -56,7 +67,7 @@
         @click="handelAddTask"
       />
     </div>
-    
+
     <q-dialog v-model="showAddFlag" maximized>
       <AddForm :type="type" :rowData="rowData" @closeModal="closeModal" />
     </q-dialog>
@@ -99,6 +110,8 @@ export default {
         unComplete: 0,
         /** 每日需完成次数 */
         dayTimes: 1,
+        /** 是否正向 */
+        isDue: true,
         /** 完成详情 */
         detail: {},
       },
@@ -183,6 +196,7 @@ export default {
     },
     /** 完成一次任务 */
     handelCompleteOnce(item) {
+      // [yyyy, mm, dd]
       const parts = this.parts;
       let itemData = { ...item };
       if (!itemData.detail?.[parts[0]]?.[parts[1]]?.[parts[2]]) {
@@ -194,8 +208,13 @@ export default {
 
         // 当天完成时，修改当日完成情况
         if (todayInfo.completeTimes === item.dayTimes) {
-          itemData.complete += 1;
-          itemData.detail[parts[0]][parts[1]][parts[2]].isComplete = true;
+          if (itemData.isDue) {
+            itemData.complete += 1;
+            itemData.detail[parts[0]][parts[1]][parts[2]].isComplete = true;
+          } else {
+            itemData.unComplete += 1;
+            itemData.detail[parts[0]][parts[1]][parts[2]].isComplete = false;
+          }
         }
 
         DB_updateData("dailyTask", itemData);
@@ -225,4 +244,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.isDue {
+  border: 1px solid #fff;
+  border-radius: 4px;
+}
+</style>
