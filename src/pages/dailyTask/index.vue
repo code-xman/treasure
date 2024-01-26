@@ -114,6 +114,8 @@ export default {
         dayTimes: 1,
         /** 是否正向 */
         isDue: true, // 反向任务，完成则增加未完成，主要是处理禁止任务（eg.不要做...）
+        /** 备注 */
+        remark: '',
         /** 完成详情 */
         detail: {},
       },

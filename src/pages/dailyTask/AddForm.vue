@@ -9,65 +9,69 @@
 
     <q-card-section class="flex-1 overflow-auto">
       <q-form ref="form" class="col q-pb-sm overflow-auto q-gutter-md">
-        <q-input
-          v-for="item in formItems"
-          :key="item.key"
-          v-model.trim="formValue[item.key]"
-          :label="item.label"
-          :rules="item.rules"
-          stack-label
-          v-bind="item.attr"
-        >
-          <template v-if="item.hint" v-slot:hint>
-            {{ item.hint }}
-          </template>
-          <template v-if="!!item.append" v-slot:append>
-            <q-icon
-              v-if="item.key === 'bgColor'"
-              name="colorize"
-              class="cursor-pointer"
-              :style="{ color: `${formValue[item.key] || '#0000008a'}` }"
-            >
-              <q-popup-proxy
-                cover
-                ref="colorRef"
-                transition-show="scale"
-                transition-hide="scale"
+        <template v-for="item in formItems">
+          <!-- toggle -->
+          <q-toggle
+            v-if="item.type === 'toggle'"
+            v-model="formValue[item.key]"
+            :key="item.key"
+            :disable="item.disable"
+            :label="item.label"
+            left-label
+            color="primary"
+            keep-color
+          />
+          <q-input
+            v-else
+            v-model.trim="formValue[item.key]"
+            :key="item.key"
+            :label="item.label"
+            :rules="item.rules"
+            stack-label
+            v-bind="item.attr"
+          >
+            <template v-if="item.hint" v-slot:hint>
+              {{ item.hint }}
+            </template>
+            <template v-if="!!item.append" v-slot:append>
+              <q-icon
+                v-if="item.key === 'bgColor'"
+                name="colorize"
+                class="cursor-pointer"
+                :style="{ color: `${formValue[item.key] || '#0000008a'}` }"
               >
-                <q-color
-                  v-model="formValue[item.key]"
-                  no-header-tabs
-                  no-footer
-                  class="my-picker"
-                  default-view="palette"
-                />
-              </q-popup-proxy>
-            </q-icon>
-            <q-icon
-              v-if="item.key === 'stratDate'"
-              name="event"
-              class="cursor-pointer"
-            >
-              <q-popup-proxy
-                cover
-                ref="stratDate"
-                transition-show="scale"
-                transition-hide="scale"
+                <q-popup-proxy
+                  cover
+                  ref="colorRef"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-color
+                    v-model="formValue[item.key]"
+                    no-header-tabs
+                    no-footer
+                    class="my-picker"
+                    default-view="palette"
+                  />
+                </q-popup-proxy>
+              </q-icon>
+              <q-icon
+                v-if="item.key === 'stratDate'"
+                name="event"
+                class="cursor-pointer"
               >
-                <q-date v-model="formValue[item.key]" />
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
-        <!-- 是否正向 -->
-        <q-toggle
-          v-model="formValue.isDue"
-          :disable="type !== 'add'"
-          :label="formValue.isDue ? '正向任务' : '反向任务'"
-          left-label
-          color="primary"
-          keep-color
-        />
+                <q-popup-proxy
+                  cover
+                  ref="stratDate"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date v-model="formValue[item.key]" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </template>
       </q-form>
     </q-card-section>
 
@@ -102,6 +106,7 @@ export default {
         unComplete: 0,
         dayTimes: 1,
         isDue: true,
+        remark: '',
         detail: {},
       }),
     },
@@ -149,6 +154,22 @@ export default {
           readonly: true,
         },
       },
+      {
+        label: "是否为正向任务",
+        key: "isDue",
+        type: "toggle",
+        disable: this.type !== "add",
+      },
+      {
+        label: "备注",
+        key: "remark",
+        attr: {
+          outlined: true,
+          type: 'textarea',
+          maxlength: 100,
+          counter: true,
+        }
+      },
     ];
     return {
       formItems: [...formList],
@@ -157,6 +178,7 @@ export default {
         dayTimes: 1,
         bgColor: "",
         isDue: true,
+        remark: '',
       },
     };
   },

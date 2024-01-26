@@ -25,6 +25,7 @@
             当日完成{{ dateDetail?.completeTimes || 0 }}次
           </q-badge>
         </div>
+        <div class="full-width text-left"> {{ rowData.remark }} </div>
       </div>
     </q-card-section>
 

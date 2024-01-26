@@ -84,7 +84,7 @@ module.exports = function (ctx) {
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      port: 8080,
+      port: 8088,
       open: false, // opens browser window automatically
       // api代理开发，处理跨域
       proxy: { 
