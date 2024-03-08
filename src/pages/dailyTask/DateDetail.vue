@@ -25,7 +25,20 @@
             当日完成{{ dateDetail?.completeTimes || 0 }}次
           </q-badge>
         </div>
-        <div class="full-width text-left"> {{ rowData.remark }} </div>
+        <q-separator class="full-width q-my-md" />
+
+        <div v-if="rowData.remark" class="full-width text-left">
+          {{ rowData.remark }}
+          <q-separator class="full-width q-my-md" />
+        </div>
+
+        <div v-if="dateDetail?.dayRemark" class="full-width text-left">
+          <p>今日备注：</p>
+          <P class="q-ml-md">
+            {{ dateDetail?.dayRemark }}
+          </P>
+          <q-separator class="full-width q-my-md" />
+        </div>
       </div>
     </q-card-section>
 
@@ -74,7 +87,10 @@ export default {
       return this.rowData.isDue ? !!res : !res;
     },
     filterOption(date) {
-      return date >= this.rowData.stratDate && date <= dayjs(new Date()).format("YYYY/MM/DD");
+      return (
+        date >= this.rowData.stratDate &&
+        date <= dayjs(new Date()).format("YYYY/MM/DD")
+      );
     },
   },
 };

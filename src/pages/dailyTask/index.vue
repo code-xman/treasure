@@ -53,6 +53,9 @@
               删除
             </q-btn>
           </Confirm>
+          <q-btn flat color="warning" @click="() => addRemark(item)">
+            备注
+          </q-btn>
           <q-btn flat color="teal" @click="() => handelCompleteOnce(item)">
             完成一次
           </q-btn>
@@ -75,6 +78,29 @@
     </q-dialog>
     <q-dialog v-model="showDetailFlag" maximized>
       <DateDetail :rowData="rowData" @closeModal="closeDetail" />
+    </q-dialog>
+    <q-dialog v-model="showRemark" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section class="row items-center q-pb-none shadow-3">
+          <div class="text-h6">备注</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense v-model="dayRemark" autofocus />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn
+            rounded
+            class="full-width shadow-up-3"
+            color="primary"
+            label="确定"
+            @click="onRemark"
+          />
+        </q-card-actions>
+      </q-card>
     </q-dialog>
   </q-page>
 </template>
@@ -115,7 +141,7 @@ export default {
         /** 是否正向 */
         isDue: true, // 反向任务，完成则增加未完成，主要是处理禁止任务（eg.不要做...）
         /** 备注 */
-        remark: '',
+        remark: "",
         /** 完成详情 */
         detail: {},
       },
@@ -123,6 +149,10 @@ export default {
       rowData: {},
       // 确认删除弹框
       showDeleteConfirm: false,
+      // 每日备注弹框
+      showRemark: false,
+      // 每日备注
+      dayRemark: "",
     };
   },
   computed: {
@@ -187,6 +217,7 @@ export default {
         itemData.detail[parts[0]][parts[1]][parts[2]] = {
           isComplete: false,
           completeTimes: 0,
+          dayRemark: "",
         };
       }
       return itemData;
@@ -223,6 +254,32 @@ export default {
     handelDeleteTask(item) {
       this.rowData = { ...item };
       this.showDeleteConfirm = true;
+    },
+    addRemark(item) {
+      const parts = this.parts;
+      this.rowData = { ...item };
+      this.dayRemark = item.detail[parts[0]]?.[parts[1]]?.[parts[2]]?.dayRemark;
+      this.showRemark = true;
+    },
+    onRemark() {
+      try {
+        const parts = this.parts;
+        if (!this.rowData.detail?.[parts[0]]?.[parts[1]]?.[parts[2]]) {
+          this.rowData = this.addTodayInfo(this.rowData);
+        }
+        this.rowData.detail[parts[0]][parts[1]][parts[2]].dayRemark =
+          this.dayRemark;
+
+        DB_updateData("dailyTask", this.rowData);
+        this.showRemark = false;
+        this.rowData = {};
+      } catch (error) {
+        this.$q.notify({
+          position: "top",
+          message: `${error}`,
+          color: "warning",
+        });
+      }
     },
     /** 完成一次任务 */
     handelCompleteOnce(item) {
