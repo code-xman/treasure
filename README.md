@@ -63,3 +63,7 @@ See [Configuring quasar.conf.js](https://v1.quasar.dev/quasar-cli/quasar-conf-js
 - Vue Router：<https://router.vuejs.org/zh/>
 - quasar 官网：<http://www.quasarchs.com/>
 - Axios 官网：<https://www.axios-http.cn//>
+
+## 备注
+
+- 启动项目 node版本可选择 16.17.1 | 14.18.2，打包请选择 14.18.2；
